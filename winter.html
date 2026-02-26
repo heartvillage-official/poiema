@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🦋 포이에마 겨울 분반 수련회</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #FFB84C;
+            --secondary: #F266AB;
+            --accent: #A459D1;
+            --bg-color: #FDF9F1;
+            --text-main: #2D2727;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .title-font {
+            font-family: 'Jua', sans-serif;
+        }
+
+        /* Hero Background with cute pattern */
+        .hero-bg {
+            background: linear-gradient(135deg, #FFE194 0%, #FFB84C 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.4) 2px, transparent 2px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 10px 25px rgba(255, 184, 76, 0.2);
+            border-radius: 24px;
+        }
+
+        /* Floating Animation */
+        .floating { animation: floating 3s ease-in-out infinite; }
+        .floating-delay { animation: floating 3s ease-in-out 1.5s infinite; }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Timeline Styles */
+        .timeline-container {
+            position: relative;
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 24px;
+            height: 100%;
+            width: 4px;
+            background: #FFE194;
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 24px;
+        }
+        .timeline-icon {
+            position: absolute;
+            left: 8px; top: 0;
+            width: 36px; height: 36px;
+            background: #FFF;
+            border: 3px solid #FFB84C;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(255, 184, 76, 0.3);
+        }
+
+        /* Sticker Checkbox */
+        .check-item {
+            display: flex;
+            align-items: center;
+            background: #FFF;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 2px dashed #FFD482;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .check-item:active {
+            transform: scale(0.98);
+            background: #FFF9E6;
+        }
+
+    </style>
+</head>
+<body class="antialiased pb-20">
+
+    <!-- Hero Section -->
+    <header class="hero-bg pt-16 pb-20 px-6 rounded-b-[40px] shadow-lg relative z-10">
+        <div class="absolute top-8 right-6 text-5xl floating opacity-80">🎳</div>
+        <div class="absolute top-20 left-4 text-4xl floating-delay opacity-80">🍕</div>
+        <div class="absolute bottom-10 right-10 text-5xl floating opacity-90">🎬</div>
+
+        <div class="max-w-md mx-auto text-center relative z-20">
+            <span class="inline-block py-1 px-4 rounded-full bg-white/30 text-[#8B5E00] font-bold text-sm mb-4 backdrop-blur-sm border border-white/50">
+                🚨 긴급 공지: VIP 초청장 🚨
+            </span>
+            <h1 class="title-font text-5xl text-white mb-2" style="text-shadow: 2px 2px 0px #E69A28, 4px 4px 10px rgba(0,0,0,0.1);">
+                포이에마<br>겨울 수련회
+            </h1>
+            <p class="text-white/90 font-medium text-lg mt-4 bg-black/10 inline-block px-5 py-2 rounded-2xl backdrop-blur-sm">
+                "너희들을 최고로 대접할게 💎"
+            </p>
+        </div>
+    </header>
+
+    <div class="max-w-md mx-auto px-5 -mt-10 relative z-20">
+        
+        <!-- Info Card -->
+        <div class="glass-card p-6 mb-8 animate__animated animate__fadeInUp">
+            <h2 class="title-font text-2xl text-[#FF8B13] mb-4 flex items-center gap-2">
+                <span>😎</span> 스포일러 (심쿵주의)
+            </h2>
+            <div class="space-y-3 text-[#5A4F4F] font-medium text-sm">
+                <div class="flex items-start gap-3">
+                    <span class="bg-[#FFE194] px-2 py-1 rounded-md text-[#8B5E00] text-xs font-bold whitespace-nowrap">일시</span>
+                    <p>토요일 오후 2시 ~ 주일 오전 9시<br><span class="text-xs text-gray-400">우리끼리 밤새우는 1박 2일! 🔥</span></p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="bg-[#FFE194] px-2 py-1 rounded-md text-[#8B5E00] text-xs font-bold whitespace-nowrap">장소</span>
+                    <p>서면 핫플 ➡️ 쿠우쿠우 ➡️ 아지트</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="bg-[#FFE194] px-2 py-1 rounded-md text-[#8B5E00] text-xs font-bold whitespace-nowrap">멤버</span>
+                    <p>사랑스러운 우리 완전체 4명<br>그리고 텐션 폭발 쌤 2명! 👩‍👧‍👧</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="mb-10">
+            <h2 class="title-font text-3xl text-center text-[#2D2727] mb-8">
+                ✨ 미친 라인업 공개 ✨
+            </h2>
+
+            <div class="timeline-container">
+                
+                <!-- Day 1 Title -->
+                <div class="bg-[#FFB84C] text-white title-font text-lg py-1 px-4 rounded-full inline-block mb-6 relative z-10 shadow-md ml-2">
+                    DAY 1 (토) : 텐션 찢고 딥 릴렉싱!
+                </div>
+
+                <!-- Timeline Items -->
+                <div class="timeline-item animate__animated animate__fadeInLeft">
+                    <div class="timeline-icon">🎳</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#F266AB]">14:00 - 16:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">서면 락볼링장 부수기!</h3>
+                        <p class="text-sm text-gray-500 mt-1">팀전으로 음료수 내기! 콜? 😎</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.1s;">
+                    <div class="timeline-icon">📸</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#A459D1]">16:00 - 17:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">네컷 사진 & 카페</h3>
+                        <p class="text-sm text-gray-500 mt-1">귀여운 소품 장착하고 우리 반 인생샷 건지러 가자!</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.2s;">
+                    <div class="timeline-icon">🍣</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-[#FFB84C]">
+                        <span class="text-xs font-bold text-[#FF8B13]">17:00 - 19:00 (Dinner!)</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">쿠우쿠우 골드 털업!</h3>
+                        <p class="text-sm text-gray-500 mt-1">쌤들이 쏜다! 배 터질 준비 단단히 하고 와요 🍕🍣</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.3s;">
+                    <div class="timeline-icon">🏠</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#4B56D2]">19:00 - 20:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">아지트 도착</h3>
+                        <p class="text-sm text-gray-500 mt-1">세상에서 제일 편한 수면바지 장착 완료! 뒹굴뒹굴 모드 ON.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.4s;">
+                    <div class="timeline-icon">💎</div>
+                    <div class="bg-[#FDF5E6] p-4 rounded-2xl shadow-sm border border-[#FFD482]">
+                        <span class="text-xs font-bold text-[#8B5E00]">20:00 - 21:00 (Secret!)</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">Masterpiece Project</h3>
+                        <p class="text-sm text-gray-600 mt-1 font-medium">✨ 너희의 자존감을 우주 끝까지 올려줄 특별한 방!</p>
+                        <ul class="text-xs text-gray-500 mt-2 space-y-1 ml-1">
+                            <li>🚪 <b>내면의 방:</b> 그림 심리테스트로 내 맘 훔쳐보기 👀</li>
+                            <li>🚪 <b>전시실:</b> 미니 비전보드 꾸미고 미친 칭찬 폭격 받기 💖</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.5s;">
+                    <div class="timeline-icon">🫧</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#00B4D8]">21:00 - 22:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">힐링의 끝판왕: 족욕 & 영화</h3>
+                        <p class="text-sm text-gray-500 mt-1">따뜻한 물에 발 담그고 영화 보기... 여기가 바로 천국 🎬</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.6s;">
+                    <div class="timeline-icon">🍗</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#E63946]">22:00 - 23:30</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">야식 & 보드게임</h3>
+                        <p class="text-sm text-gray-500 mt-1">또 다른 재미.. ㅎㅎ 🎲</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.7s;">
+                    <div class="timeline-icon">💤</div>
+                    <div class="bg-[#2D2727] p-4 rounded-2xl shadow-sm">
+                        <span class="text-xs font-bold text-[#FFE194]">23:30 ~</span>
+                        <h3 class="font-bold text-lg text-white mt-1">밤샘? NO 꿀잠 타임!</h3>
+                        <p class="text-sm text-gray-400 mt-1">각자 가져온 푹신한 침낭 속에서 도란도란 떠들다 꿀잠 🌙</p>
+                    </div>
+                </div>
+
+                <!-- Day 2 Title -->
+                <div class="bg-[#4B56D2] text-white title-font text-lg py-1 px-4 rounded-full inline-block mt-4 mb-6 relative z-10 shadow-md ml-2">
+                    DAY 2 (주일) : 갓생 살기 프로젝트
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.8s;">
+                    <div class="timeline-icon">☀️</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#FFB84C]">08:00 - 09:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">아침 QT </h3>
+                        <p class="text-sm text-gray-500 mt-1">큐티(QT) 묵상으로 하루 폼 미치게 시작 📖</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.9s;">
+                    <div class="timeline-icon">⛪</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#2D2727]">09:00 ~</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">교회로 출발!</h3>
+                        <p class="text-sm text-gray-500 mt-1">에너지 100% 충전 완료! 가장 예쁜 모습으로 말씀들으러 가자 ✨</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preparation Checklist -->
+        <div class="mb-10 animate__animated animate__fadeInUp">
+            <h2 class="title-font text-2xl text-center text-[#2D2727] mb-4">
+                🎒 이건 무조건 챙겨와요!
+            </h2>
+            <div class="bg-white p-5 rounded-[24px] shadow-sm border-2 border-[#FFE194]">
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <span class="text-2xl mr-3 grayscale transition-all duration-300">📖</span>
+                    <span class="font-bold text-[#2D2727] flex-1">참빛 교재 & 성경책</span>
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-white check-circle">✓</div>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <span class="text-2xl mr-3 grayscale transition-all duration-300">🛌</span>
+                    <span class="font-bold text-[#2D2727] flex-1">개인 침낭 (중요!!! 별표  ⭐️)</span>
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-white check-circle">✓</div>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <span class="text-2xl mr-3 grayscale transition-all duration-300">🪥</span>
+                    <span class="font-bold text-[#2D2727] flex-1">개인 세면도구 (뽀송뽀송하게 씻자)</span>
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-white check-circle">✓</div>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <span class="text-2xl mr-3 grayscale transition-all duration-300">👕</span>
+                    <span class="font-bold text-[#2D2727] flex-1">여벌 옷 & 세상 편한 수면바지!</span>
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-white check-circle">✓</div>
+                </div>
+                <p class="text-center text-xs text-gray-400 mt-3">* 짐 싸면서 하나씩 터치해서 체크해봐요! 👇</p>
+            </div>
+        </div>
+
+        <div class="text-center pb-10">
+            <p class="title-font text-2xl text-[#FF8B13] animate-pulse">우리 많은 추억 만들자! ❤️🔥</p>
+        </div>
+    </div>
+
+    <script>
+        // Checkbox interaction
+        function toggleCheck(element) {
+            const circle = element.querySelector('.check-circle');
+            const emoji = element.querySelector('span:first-child');
+            
+            if (circle.classList.contains('bg-[#FFB84C]')) {
+                circle.classList.remove('bg-[#FFB84C]', 'border-[#FFB84C]');
+                circle.classList.add('border-gray-300');
+                emoji.classList.add('grayscale');
+                element.style.borderColor = '#FFD482';
+            } else {
+                circle.classList.remove('border-gray-300');
+                circle.classList.add('bg-[#FFB84C]', 'border-[#FFB84C]');
+                emoji.classList.remove('grayscale');
+                element.style.borderColor = '#FFB84C';
+            }
+        }
+    </script>
+</body>
+</html>
