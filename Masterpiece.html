@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🦋 포이에마 겨울 분반 수련회</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #FFB84C;
+            --secondary: #F266AB;
+            --accent: #A459D1;
+            --bg-color: #FDF9F1;
+            --text-main: #2D2727;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .title-font {
+            font-family: 'Jua', sans-serif;
+        }
+
+        /* Hero Background with cute pattern */
+        .hero-bg {
+            background: linear-gradient(135deg, #FFE194 0%, #FFB84C 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.4) 2px, transparent 2px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 10px 25px rgba(255, 184, 76, 0.2);
+            border-radius: 24px;
+        }
+
+        /* Floating Animation */
+        .floating { animation: floating 3s ease-in-out infinite; }
+        .floating-delay { animation: floating 3s ease-in-out 1.5s infinite; }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Timeline Styles */
+        .timeline-container {
+            position: relative;
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 24px;
+            height: 100%;
+            width: 4px;
+            background: #FFE194;
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 24px;
+        }
+        .timeline-icon {
+            position: absolute;
+            left: 8px; top: 0;
+            width: 36px; height: 36px;
+            background: #FFF;
+            border: 3px solid #FFB84C;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(255, 184, 76, 0.3);
+        }
+
+        /* Sticker Checkbox */
+        .check-item {
+            display: flex;
+            align-items: center;
+            background: #FFF;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 2px dashed #FFD482;
+            transition: all 0.2s;
+        }
+        .check-item:active {
+            transform: scale(0.98);
+            background: #FFF9E6;
+        }
+
+        /* Wavy divider */
+        .wavy-divider {
+            height: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23FFE194'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #2D2727;
+            color: #fff;
+            text-align: center;
+            border-radius: 30px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+    </style>
+</head>
+<body class="antialiased pb-20">
+
+    <!-- Hero Section -->
+    <header class="hero-bg pt-16 pb-20 px-6 rounded-b-[40px] shadow-lg relative z-10">
+        <div class="absolute top-8 right-6 text-5xl floating opacity-80">🎳</div>
+        <div class="absolute top-20 left-4 text-4xl floating-delay opacity-80">🍣</div>
+        <div class="absolute bottom-10 right-10 text-5xl floating opacity-90">🎬</div>
+
+        <div class="max-w-md mx-auto text-center relative z-20">
+            <span class="inline-block py-1 px-4 rounded-full bg-white/30 text-[#8B5E00] font-bold text-sm mb-4 backdrop-blur-sm border border-white/50">
+                2026 Winter Retreat
+            </span>
+            <h1 class="title-font text-5xl text-white mb-2" style="text-shadow: 2px 2px 0px #E69A28, 4px 4px 10px rgba(0,0,0,0.1);">
+                포이에마<br>분반 수련회
+            </h1>
+            <p class="text-white/90 font-medium text-lg mt-4 bg-black/10 inline-block px-5 py-2 rounded-2xl backdrop-blur-sm">
+                "Masterpiece, 내 안의 보석을 찾아서"
+            </p>
+        </div>
+    </header>
+
+    <div class="max-w-md mx-auto px-5 -mt-10 relative z-20">
+        
+        <!-- Info Card -->
+        <div class="glass-card p-6 mb-8 animate__animated animate__fadeInUp">
+            <h2 class="title-font text-2xl text-[#FF8B13] mb-4 flex items-center gap-2">
+                <span>🗓️</span> 안내사항
+            </h2>
+            <div class="space-y-3 text-[#5A4F4F] font-medium text-sm">
+                <div class="flex items-start gap-3">
+                    <span class="bg-[#FFE194] px-2 py-1 rounded-md text-[#8B5E00] text-xs font-bold whitespace-nowrap">일시</span>
+                    <p>토요일 오후 2시 ~ 주일 오전 9시<br><span class="text-xs text-gray-400">(1박 2일)</span></p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="bg-[#FFE194] px-2 py-1 rounded-md text-[#8B5E00] text-xs font-bold whitespace-nowrap">장소</span>
+                    <p>서면 ➡️ 경성대 ➡️ 지게골 매장</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="bg-[#FFE194] px-2 py-1 rounded-md text-[#8B5E00] text-xs font-bold whitespace-nowrap">대상</span>
+                    <p>사랑스러운 우리 아이들 4명<br>그리고 선생님 2명! 👩‍👧‍👧</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="mb-10">
+            <h2 class="title-font text-3xl text-center text-[#2D2727] mb-8">
+                ✨ 타임 테이블 ✨
+            </h2>
+
+            <div class="timeline-container">
+                
+                <!-- Day 1 Title -->
+                <div class="bg-[#FFB84C] text-white title-font text-lg py-1 px-4 rounded-full inline-block mb-6 relative z-10 shadow-md ml-2">
+                    DAY 1 (토요일) : 에너지 UP & 딥 릴렉싱
+                </div>
+
+                <!-- Timeline Items -->
+                <div class="timeline-item animate__animated animate__fadeInLeft">
+                    <div class="timeline-icon">🎳</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#F266AB]">14:00 - 16:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">서면 락볼링장 부수기!</h3>
+                        <p class="text-sm text-gray-500 mt-1">선생님들과 함께 신나는 볼링 한 판! 학업 스트레스를 날려요.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.1s;">
+                    <div class="timeline-icon">📸</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#A459D1]">16:00 - 17:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">네컷 사진 & 카페</h3>
+                        <p class="text-sm text-gray-500 mt-1">예쁜 소품들과 함께 우리 반 단체 사진 찰칵!</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.2s;">
+                    <div class="timeline-icon">🍣</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-[#FFB84C]">
+                        <span class="text-xs font-bold text-[#FF8B13]">17:00 - 19:00 (Dinner!)</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">쿠우쿠우 골드 뷔페</h3>
+                        <p class="text-sm text-gray-500 mt-1">우리 아이들을 VIP로 대접합니다. 맛있고 든든한 저녁 식사 🍕🍣</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.3s;">
+                    <div class="timeline-icon">🏠</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#4B56D2]">19:00 - 20:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">매장 도착 & 환복</h3>
+                        <p class="text-sm text-gray-500 mt-1">안전하게 지게골 매장 도착! 가장 편안한 옷으로 갈아입어요.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.4s;">
+                    <div class="timeline-icon">💎</div>
+                    <div class="bg-[#FDF5E6] p-4 rounded-2xl shadow-sm border border-[#FFD482]">
+                        <span class="text-xs font-bold text-[#8B5E00]">20:00 - 21:00 (Main Event!)</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">Masterpiece Project</h3>
+                        <p class="text-sm text-gray-600 mt-1 font-medium">✨ 아이들의 속마음을 듣고 자존감을 높여주는 특별한 시간!</p>
+                        <ul class="text-xs text-gray-500 mt-2 space-y-1 ml-1">
+                            <li>🚪 <b>내면의 방:</b> 그림 심리 진단으로 마음 알아가기</li>
+                            <li>🚪 <b>전시실:</b> 미니 비전보드 꾸미고 서로 칭찬하기</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.5s;">
+                    <div class="timeline-icon">🫧</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#00B4D8]">21:00 - 22:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">딥 릴렉싱: 족욕 & 영화</h3>
+                        <p class="text-sm text-gray-500 mt-1">따뜻한 족욕과 함께 감동적인 영화 시청 🎬</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.6s;">
+                    <div class="timeline-icon">🍗</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#E63946]">22:00 - 23:30</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">야식 & 보드게임</h3>
+                        <p class="text-sm text-gray-500 mt-1">건전하고 신나는 보드게임으로 웃음꽃 피우기 🎲</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.7s;">
+                    <div class="timeline-icon">💤</div>
+                    <div class="bg-[#2D2727] p-4 rounded-2xl shadow-sm">
+                        <span class="text-xs font-bold text-[#FFE194]">23:30 ~</span>
+                        <h3 class="font-bold text-lg text-white mt-1">꿀잠 타임</h3>
+                        <p class="text-sm text-gray-400 mt-1">따뜻한 개인 침낭에서 도란도란 이야기 나누며 꿈나라로 🌙</p>
+                    </div>
+                </div>
+
+                <!-- Day 2 Title -->
+                <div class="bg-[#4B56D2] text-white title-font text-lg py-1 px-4 rounded-full inline-block mt-4 mb-6 relative z-10 shadow-md ml-2">
+                    DAY 2 (주일) : 빛으로 시작하는 아침
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.8s;">
+                    <div class="timeline-icon">☀️</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#FFB84C]">08:00 - 09:00</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">아침 QT & 브런치</h3>
+                        <p class="text-sm text-gray-500 mt-1">든든한 아침 식사와 큐티(QT) 묵상으로 하루 시작 📖</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate__animated animate__fadeInLeft" style="animation-delay: 0.9s;">
+                    <div class="timeline-icon">⛪</div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-[#2D2727]">09:00 ~</span>
+                        <h3 class="font-bold text-lg text-[#2D2727] mt-1">교회로 출발!</h3>
+                        <p class="text-sm text-gray-500 mt-1">은혜로운 주일 예배를 위해 기쁘게 교회로 출발합니다 ✨</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preparation Checklist -->
+        <div class="mb-10 animate__animated animate__fadeInUp">
+            <h2 class="title-font text-2xl text-center text-[#2D2727] mb-4">
+                🎒 꼭 챙겨오세요!
+            </h2>
+            <div class="bg-white p-5 rounded-[24px] shadow-sm border-2 border-[#FFE194]">
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <span class="text-2xl mr-3 grayscale transition-all duration-300">📖</span>
+                    <span class="font-bold text-[#2D2727] flex-1">참빛 교재 & 성경책</span>
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-white check-circle">✓</div>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <span class="text-2xl mr-3 grayscale transition-all duration-300">🛌</span>
+                    <span class="font-bold text-[#2D2727] flex-1">개인 침낭 (필수!)</span>
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-white check-circle">✓</div>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <span class="text-2xl mr-3 grayscale transition-all duration-300">🪥</span>
+                    <span class="font-bold text-[#2D2727] flex-1">개인 세면도구</span>
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-white check-circle">✓</div>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <span class="text-2xl mr-3 grayscale transition-all duration-300">👕</span>
+                    <span class="font-bold text-[#2D2727] flex-1">여벌 옷 & 아주 편한 잠옷</span>
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-white check-circle">✓</div>
+                </div>
+                <p class="text-center text-xs text-gray-400 mt-3">* 터치해서 체크해보세요!</p>
+            </div>
+        </div>
+
+        <!-- Parent Notice & Account Info -->
+        <div class="bg-[#2D2727] rounded-[30px] p-6 text-white shadow-xl relative overflow-hidden mb-8 animate__animated animate__fadeInUp">
+            <!-- decorative circles -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-[#FFB84C]/20 rounded-full blur-xl"></div>
+            
+            <h2 class="title-font text-2xl mb-4 text-[#FFB84C]">👨‍👩‍👧 학부모님께 안내드립니다.</h2>
+            <p class="text-sm font-light leading-relaxed mb-6 text-gray-200">
+                아이들이 스트레스를 훌훌 털어버리고 서로 깊은 속마음을 나누는 귀한 1박 2일이 될 것입니다.<br><br>
+                아이들을 최고로 대접하고 싶어 프리미엄 뷔페(쿠우쿠우)와 알찬 프로그램을 준비하다 보니 예산이 조금 초과되어, 부득이하게 회비를 부탁드리게 되었습니다.<br>
+                귀한 자녀들을 믿고 맡겨주셔서 감사합니다! 안전하고 은혜롭게 잘 다녀오겠습니다. 🥰
+            </p>
+
+            <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-md border border-white/20">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs text-[#FFB84C] font-bold">수련회 회비</span>
+                    <span class="font-bold text-lg">20,000 원</span>
+                </div>
+                <div class="w-full h-[1px] bg-white/20 my-3"></div>
+                <div class="flex flex-col gap-1 mb-4">
+                    <span class="text-xs text-gray-400">입금 계좌</span>
+                    <span class="font-bold tracking-wider" id="account-number">카카오뱅크 3333-01-2345678</span>
+                    <span class="text-xs text-gray-400">예금주 : 김사랑</span>
+                </div>
+                <button onclick="copyAccount()" class="w-full py-3 bg-[#FFB84C] hover:bg-[#FFA51E] text-[#2D2727] font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256"><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path></svg>
+                    계좌번호 복사하기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toast" class="toast">계좌번호가 복사되었습니다! 💸</div>
+
+    <script>
+        // Checkbox interaction
+        function toggleCheck(element) {
+            const circle = element.querySelector('.check-circle');
+            const emoji = element.querySelector('span:first-child');
+            
+            if (circle.classList.contains('bg-[#FFB84C]')) {
+                circle.classList.remove('bg-[#FFB84C]', 'border-[#FFB84C]');
+                circle.classList.add('border-gray-300');
+                emoji.classList.add('grayscale');
+                element.style.borderColor = '#FFD482';
+            } else {
+                circle.classList.remove('border-gray-300');
+                circle.classList.add('bg-[#FFB84C]', 'border-[#FFB84C]');
+                emoji.classList.remove('grayscale');
+                element.style.borderColor = '#FFB84C';
+            }
+        }
+
+        // Copy Account logic
+        function copyAccount() {
+            // 실제 사용하실 계좌번호로 아래 텍스트를 변경해주세요!
+            const accountNumber = "카카오뱅크 3333-01-2345678"; 
+            
+            // Clipboard API (works in modern browsers)
+            const textArea = document.createElement("textarea");
+            textArea.value = accountNumber;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {
+                console.error('복사 실패', err);
+                alert("복사에 실패했습니다. 직접 입력해주세요 ㅠㅠ");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "toast show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 2500);
+        }
+    </script>
+</body>
+</html>
