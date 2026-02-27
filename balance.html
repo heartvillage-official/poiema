@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <!-- 화면 비율 고정, 확대 방지 (찌그러짐 방지 핵심) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💎 마스터피스 밸런스 토크</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --primary: #FFB84C;
+            --card-front: #FFFFFF;
+            --card-back: #2D2727;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 30%, #2a2a2a 0%, #121212 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            color: white;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            perspective: 1500px; /* 전체 3D 공간 깊이 */
+            touch-action: manipulation;
+        }
+
+        .title-font { font-family: 'Jua', sans-serif; }
+
+        /* 글자 끊김 방지 */
+        .keep-all { word-break: keep-all; line-break: loose; }
+
+        /* 메인 컨테이너 */
+        #app-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        /* 헤더 영역 */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            animation: fadeInDown 1s ease;
+            width: 100%;
+        }
+
+        /* -------------------------------------
+           3D 플래시 카드 핵심 CSS (버그 수정 완료)
+        -------------------------------------- */
+        .card-deck {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            height: 55vh; /* 화면 크기에 맞게 자동 조절 */
+            min-height: 420px;
+            max-height: 500px;
+            perspective: 2000px;
+        }
+
+        /* 카드 래퍼 (스태킹 & 날아가기 애니메이션 담당) */
+        .flash-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        /* 카드 이너 (뒤집기 담당) - iOS 버그 해결의 핵심! */
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), 0 0 20px rgba(255, 184, 76, 0.1);
+        }
+
+        /* 카드 앞뒷면 공통 */
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden; /* 아이폰 앞뒷면 겹침 방지 */
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        /* 카드 앞면 */
+        .card-front {
+            background: linear-gradient(135deg, #FFB84C 0%, #FF8B13 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transform: rotateY(0deg);
+        }
+
+        /* 카드 뒷면 */
+        .card-back {
+            background: var(--card-back);
+            border: 2px solid #FFB84C;
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 15px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 안의 요소들을 골고루 분배 */
+        }
+
+        /* 카드가 뒤집혔을 때 */
+        .flash-card.is-flipped .card-inner {
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 30px rgba(255, 184, 76, 0.4);
+        }
+
+        /* 날아가기 효과 */
+        .swipe-out-right {
+            transform: translateX(120%) rotateY(20deg) rotateZ(10deg) scale(0.8) !important;
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+
+        .swipe-out-left {
+            transform: translateX(-120%) rotateY(-20deg) rotateZ(-10deg) scale(0.8) !important;
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+
+        /* -------------------------------------
+           내부 컨텐츠 스타일
+        -------------------------------------- */
+        .level-badge {
+            position: absolute;
+            top: -16px;
+            background: #2D2727;
+            color: #FFB84C;
+            padding: 6px 24px;
+            border-radius: 30px;
+            font-weight: 900;
+            font-size: 0.9rem;
+            border: 2px solid #FFB84C;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+
+        /* 밸런스 선택 버튼 (찌부 안 되게 꽉 채움) */
+        .balance-option {
+            width: 100%;
+            flex: 1; /* 남은 공간을 알아서 똑같이 차지함 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: clamp(1rem, 4vw, 1.15rem); /* 글자 크기 유동적 조절 */
+            line-height: 1.4;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            margin: 5px 0;
+            color: #E2E8F0;
+        }
+
+        /* 하단 컨트롤 버튼 */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none; /* 숨겨져 있을 때 클릭 방지 */
+        }
+        
+        .controls.show { 
+            opacity: 1; 
+            pointer-events: auto;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            font-size: 0.95rem;
+        }
+
+        .btn-primary { background: #FFB84C; color: #121212; border: none; box-shadow: 0 5px 15px rgba(255,184,76,0.3); }
+        .btn-primary:active { transform: scale(0.95); }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti"></canvas>
+
+    <div id="app-container">
+        
+        <div class="header">
+            <h1 class="title-font text-3xl md:text-4xl text-[#FFB84C] mb-3 drop-shadow-lg">✨ 나만의 밸런스 찾기 ✨</h1>
+            <p class="text-gray-300 text-xs md:text-sm tracking-widest bg-white/10 px-5 py-2 rounded-full inline-block backdrop-blur-sm border border-white/10 shadow-inner">
+                카드를 가볍게 터치해보세요! 👆
+            </p>
+        </div>
+
+        <div class="card-deck" id="deck">
+            <!-- JS 동적 생성 영역 -->
+        </div>
+
+        <div class="controls" id="controls">
+            <button class="btn" onclick="swipeCard('left')">👈 패스</button>
+            <button class="btn btn-primary" onclick="swipeCard('right')">선택 완료 👉</button>
+        </div>
+
+        <!-- 최종 완료 화면 -->
+        <div id="end-message" class="hidden flex-col items-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-50">
+            <div class="text-7xl mb-6 animate-bounce drop-shadow-2xl">🎨</div>
+            <h2 class="title-font text-4xl text-[#FFB84C] mb-4">빌드업 완료!</h2>
+            <p class="text-lg text-gray-200 mb-8 leading-relaxed keep-all px-4">
+                여러분의 마음속 우선순위가 보이시나요?<br>
+                이제 이 가치를 듬뿍 담아<br>
+                <strong class="text-white text-xl border-b-2 border-[#FFB84C] pb-1">나만의 캐리커처 비전보드</strong>를 그릴 시간입니다!
+            </p>
+            <button class="btn btn-primary text-lg px-8 py-4 rounded-full shadow-[0_0_30px_rgba(255,184,76,0.5)] animate-pulse" onclick="startVisionBoard()">
+                비전보드 그리기 🚀
+            </button>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // 사랑대표 기획 리스트
+        const cardsData = [
+            {
+                level: "Lv.1 워밍업",
+                title: "궁극의 입맛 밸런스",
+                icon: "🍗",
+                optA: "평생 치킨만 먹기",
+                optB: "평생 떡볶이만 먹기"
+            },
+            {
+                level: "Lv.1 성향 파악",
+                title: "어느 쪽이 더 킹받아?",
+                icon: "🤯",
+                optA: "내 뼈 깎는 노력을<br>아무도 몰라주기",
+                optB: "내가 안 한 일로<br>과하게 칭찬받기"
+            },
+            {
+                level: "Lv.2 가치관",
+                title: "하루 25시간이 주어진다면?",
+                icon: "⏰",
+                optA: "아무 생각 없이<br>1시간 꿀잠 자기",
+                optB: "나만의 취미/자기계발<br>1시간 투자하기"
+            },
+            {
+                level: "Lv.2 우선순위",
+                title: "내일 지구 종말이 온다면?",
+                icon: "🌍",
+                optA: "사랑하는 가족/친구와<br>마지막 만찬 즐기기",
+                optB: "평소 하고 싶었던 일<br>미친 듯이 저질러보기"
+            },
+            {
+                level: "Lv.3 비전",
+                title: "하나님이 초능력을 주신다면?",
+                icon: "⚡",
+                optA: "미래의 내 모습을<br>볼 수 있는 능력",
+                optB: "주변 사람의 아픈 마음을<br>치유하는 능력"
+            },
+            {
+                level: "Lv.3 마스터피스",
+                title: "10년 뒤 나의 해시태그는?",
+                icon: "💎",
+                optA: "#자수성가<br>#성공한_능력자",
+                optB: "#존경받는<br>#선한_영향력"
+            }
+        ];
+
+        const deck = document.getElementById('deck');
+        const controls = document.getElementById('controls');
+        let currentCardIndex = cardsData.length - 1; // 배열 역순으로 스태킹
+
+        function initCards() {
+            cardsData.forEach((data, index) => {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'flash-card';
+                cardWrapper.id = `card-${index}`;
+                
+                // 3D 스태킹 효과 계산
+                const distFromTop = (cardsData.length - 1 - index);
+                const translateY = distFromTop * 12;
+                const translateZ = distFromTop * -40;
+                const scale = 1 - (distFromTop * 0.06);
+                const opacity = 1 - (distFromTop * 0.15);
+
+                cardWrapper.style.zIndex = index;
+                // wrapper에 위치 transform 적용
+                cardWrapper.style.transform = `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`;
+                cardWrapper.style.opacity = opacity;
+
+                cardWrapper.innerHTML = `
+                    <div class="card-inner">
+                        <!-- 카드 앞면 (질문 표지) -->
+                        <div class="card-face card-front">
+                            <div class="level-badge">${data.level}</div>
+                            <div class="text-7xl mb-6 drop-shadow-xl transform transition-transform group-hover:scale-110">${data.icon}</div>
+                            <h2 class="title-font text-3xl font-bold leading-snug text-[#2D2727] keep-all px-2">${data.title}</h2>
+                            <div class="mt-8 bg-white/40 text-[#2D2727] font-bold text-xs px-4 py-2 rounded-full animate-pulse shadow-sm">
+                                👆 탭해서 열어보기
+                            </div>
+                        </div>
+                        
+                        <!-- 카드 뒷면 (선택지) -->
+                        <div class="card-face card-back">
+                            <div class="text-4xl mb-2">${data.icon}</div>
+                            <h3 class="title-font text-xl text-[#FFB84C] mb-2">당신의 선택은?</h3>
+                            
+                            <!-- 선택지 박스 (flex-1로 찌그러짐 방지) -->
+                            <div class="w-full flex flex-col gap-2 flex-1 mt-2">
+                                <div class="balance-option" onclick="selectOption(event, this)">
+                                    <span class="keep-all text-center">A. ${data.optA}</span>
+                                </div>
+                                <div class="text-gray-400 font-black text-sm tracking-widest my-0.5">VS</div>
+                                <div class="balance-option" onclick="selectOption(event, this)">
+                                    <span class="keep-all text-center">B. ${data.optB}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // 터치 시 카드 뒤집기
+                cardWrapper.addEventListener('click', function() {
+                    // 제일 위 카드만 반응하도록
+                    if (this.id === `card-${currentCardIndex}`) {
+                        this.classList.toggle('is-flipped');
+                        if (this.classList.contains('is-flipped')) {
+                            controls.classList.add('show');
+                        } else {
+                            controls.classList.remove('show');
+                        }
+                    }
+                });
+
+                deck.appendChild(cardWrapper);
+            });
+        }
+
+        // 옵션 터치 효과 & 자동 넘기기
+        window.selectOption = function(e, element) {
+            e.stopPropagation(); // 카드 닫히는 현상 방지
+            
+            // 다른 옵션들 초기화
+            const siblings = element.parentElement.querySelectorAll('.balance-option');
+            siblings.forEach(el => {
+                el.style.background = 'rgba(255, 255, 255, 0.08)';
+                el.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                el.style.boxShadow = 'none';
+                el.style.color = '#E2E8F0';
+            });
+
+            // 선택된 거 반짝이게!
+            element.style.background = 'rgba(255, 184, 76, 0.2)';
+            element.style.borderColor = '#FFB84C';
+            element.style.color = '#FFB84C';
+            element.style.boxShadow = '0 0 20px rgba(255,184,76,0.4)';
+
+            // 0.8초 감상 후 우측으로 휙~
+            setTimeout(() => {
+                swipeCard('right');
+            }, 800);
+        };
+
+        // 카드 날려버리기
+        window.swipeCard = function(direction) {
+            if (currentCardIndex < 0) return;
+
+            const currentCard = document.getElementById(`card-${currentCardIndex}`);
+            
+            if (direction === 'left') {
+                currentCard.classList.add('swipe-out-left');
+            } else {
+                currentCard.classList.add('swipe-out-right');
+            }
+
+            controls.classList.remove('show');
+            currentCardIndex--;
+
+            // 밑에 깔려있던 카드들 앞으로 끌어오기
+            updateCardsPosition();
+
+            // 모든 카드를 다 넘겼다면 완료 화면 띄우기
+            if (currentCardIndex < 0) {
+                setTimeout(() => {
+                    deck.style.display = 'none';
+                    document.querySelector('.header').style.display = 'none';
+                    const endMsg = document.getElementById('end-message');
+                    endMsg.classList.remove('hidden');
+                    endMsg.classList.add('flex');
+                    fireConfetti();
+                }, 500);
+            }
+        };
+
+        // 남은 카드들 3D 뎁스 재조정
+        function updateCardsPosition() {
+            for (let i = 0; i <= currentCardIndex; i++) {
+                const cardWrapper = document.getElementById(`card-${i}`);
+                const distFromTop = currentCardIndex - i; 
+                
+                const translateY = distFromTop * 12;
+                const translateZ = distFromTop * -40;
+                const scale = 1 - (distFromTop * 0.06);
+                const opacity = 1 - (distFromTop * 0.15);
+
+                cardWrapper.style.zIndex = i;
+                // 위치 이동은 !important가 없으므로 CSS에서 부드럽게 transition 됨
+                cardWrapper.style.transform = `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`;
+                cardWrapper.style.opacity = opacity;
+            }
+        }
+
+        // 축하 폭죽 파티클
+        function fireConfetti() {
+            const duration = 3000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                const particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // 비전보드 시작 알림
+        window.startVisionBoard = function() {
+            alert("사랑대표 큐레이터 출동!! 👩‍🎨 \n아이들에게 바인더 속지와 색연필을 나눠주세요!");
+        };
+
+        initCards();
+    </script>
+</body>
+</html>
